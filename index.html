@@ -18,9 +18,13 @@ input {
 	font-family: inherit;
 	font-size: inherit;
 	line-height: 2;
-	flex-grow:;
 	margin: 2rem;
 	width: 50vw;
+	border: 0;
+}
+
+input:focus {
+	outline: 0;
 }
 
 div {
@@ -43,7 +47,7 @@ mark.correct {
 	<body>
 		<p></p>
 		<div></div>
-		<input onInput="handleInput(event)">
+		<input autofocus spellcheck="false" placeholder="Type here..." onInput="handleInput(event)">
 
 		<script>
 let startTime
