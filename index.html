@@ -1,0 +1,104 @@
+<html>
+	<head>
+		<style>
+body {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	/* flex: auto; */
+	justify-content: center;
+	height: 100vh;
+	/* box-sizing: border-box; */
+	margin: 0;
+	padding: 0;
+	font-family: 'fira mono';
+}
+
+input {
+	font-family: inherit;
+	font-size: inherit;
+	line-height: 2;
+	flex-grow:;
+	margin: 2rem;
+	width: 50vw;
+}
+
+div {
+	width: 50vw;
+	color: #999;
+}
+
+mark.incorrect {
+	background: none;
+	color: tomato;
+}
+
+mark.correct {
+	background: none;
+	color: #222;
+}
+		</style>
+
+	</head>
+	<body>
+		<div></div>
+		<input onInput="handleInput(event)">
+
+		<script>
+const text = "Studies that and rank the most common words in English examine texts written in English. Perhaps the most comprehensive such analysis is one that was conducted against the Oxford English Corpus (OEC), a very large collection of texts from around the world that are written in the English language. A text corpus is a large collection of written works that are organised in a way that makes such analysis easier."
+const words = text.split(" ").map(value => ({
+	value,
+	status: "UNTYPED"
+}))
+
+const render = words => {
+	document.querySelector("div").innerHTML = words.map(({value, status}) => {
+		if (status === "UNTYPED") {
+			return value
+		}
+
+		if (status === "TYPED_INCORRECTLY") {
+			return `<mark class="incorrect">${value}</mark>`
+		}
+
+		return `<mark class="correct">${value}</mark>`
+	}).join(" ")
+}
+render(words)
+
+const handleInput = (event) => {
+	const typedWords = event.target.value.split(" ")
+
+	const updatedWords = words.map(({value, status}, index) => {
+		if (!typedWords[index]) {
+			return {
+				value,
+				status
+			}
+		}
+
+		if (value.startsWith(typedWords[index])) {
+			return {
+				value,
+				status: "TYPING"
+			}
+		}
+
+		if (typedWords[index] === value) {
+			return {
+				value,
+				status: "TYPED_CORRECTLY"
+			}
+		}
+
+		return {
+			value,
+			status: "TYPED_INCORRECTLY"
+		}
+	})
+
+	render(updatedWords)
+}
+		</script>
+	</body>
+</html>
