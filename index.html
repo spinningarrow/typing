@@ -41,6 +41,12 @@ mark.correct {
 	background: none;
 	color: #222;
 }
+
+mark.typing {
+	background: none;
+	color: inherit;
+	text-decoration: underline;
+}
 		</style>
 
 	</head>
@@ -66,6 +72,10 @@ const render = words => {
 
 		if (status === "TYPED_INCORRECTLY") {
 			return `<mark class="incorrect">${value}</mark>`
+		}
+
+		if (status === "TYPING") {
+			return `<mark class="typing">${value}</mark>`
 		}
 
 		return `<mark class="correct">${value}</mark>`
@@ -98,17 +108,17 @@ const handleInput = (event) => {
 			}
 		}
 
-		if (value.startsWith(typedWords[index])) {
-			return {
-				value,
-				status: "TYPING"
-			}
-		}
-
 		if (typedWords[index] === value) {
 			return {
 				value,
 				status: "TYPED_CORRECTLY"
+			}
+		}
+
+		if (value.startsWith(typedWords[index])) {
+			return {
+				value,
+				status: "TYPING"
 			}
 		}
 
