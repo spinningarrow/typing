@@ -41,10 +41,13 @@ mark.correct {
 
 	</head>
 	<body>
+		<p></p>
 		<div></div>
 		<input onInput="handleInput(event)">
 
 		<script>
+let startTime
+let endTime
 const text = "Studies that and rank the most common words in English examine texts written in English. Perhaps the most comprehensive such analysis is one that was conducted against the Oxford English Corpus (OEC), a very large collection of texts from around the world that are written in the English language. A text corpus is a large collection of written works that are organised in a way that makes such analysis easier."
 const words = text.split(" ").map(value => ({
 	value,
@@ -63,10 +66,24 @@ const render = words => {
 
 		return `<mark class="correct">${value}</mark>`
 	}).join(" ")
+
+	if (!startTime || !endTime) return
+
+	const characterCount = document.querySelector("input").value.split(" ").join("").length
+	const timeSeconds = (endTime - startTime) / 1000
+	const charactersPerSecond = characterCount / timeSeconds
+	const wordsPerSecond = charactersPerSecond / 6
+	const wordsPerMinute = Math.floor(wordsPerSecond * 60)
+	document.querySelector("p").innerText = `${wordsPerMinute} wpm`
 }
 render(words)
 
 const handleInput = (event) => {
+	if (!startTime) {
+		startTime = performance.now()
+	}
+	endTime = performance.now()
+
 	const typedWords = event.target.value.split(" ")
 
 	const updatedWords = words.map(({value, status}, index) => {
